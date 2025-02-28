@@ -12,6 +12,28 @@ class HomePage extends StatelessWidget {
       body: Column(
         children: [
           searchField(),
+          SizedBox(
+            height: 40,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: Text(
+                  "Category",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Container(
+                color: Colors.green,
+                height: 150,
+              ),
+            ],
+          ),
         ],
       ),
     );
