@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class DietModel {
   String name;
   String iconPath;
