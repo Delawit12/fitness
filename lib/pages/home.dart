@@ -4,11 +4,18 @@ import 'package:fitness/models/popularModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   List<CategoryModel> categories = [];
+
   List<DietModel> diets = [];
+
   List<PopularModel> popular = [];
 
   void getCategories() {
@@ -352,7 +359,7 @@ class HomePage extends StatelessWidget {
       elevation: 0.0,
       centerTitle: true,
       leading: GestureDetector(
-        onTap: () => {},
+        onTap: () => {print('back button tapped')},
         child: Container(
           margin: EdgeInsets.all(10),
           alignment: Alignment.center,
