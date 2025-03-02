@@ -30,6 +30,71 @@ class _HomePageState extends State<HomePage> {
     popular = PopularModel.getPopular();
   }
 
+  void _showCategoryDetails(CategoryModel category) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // like a pop up page
+        return GestureDetector(
+          onDoubleTap: () {
+            Navigator.of(context).pop();
+          },
+          child: AlertDialog(
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize
+                  .min, // this will manage the hight of the box depending on the content
+              children: [
+                SvgPicture.asset(
+                  category.iconPath,
+                  width: 80,
+                  height: 80,
+                ),
+                const SizedBox(height: 16), // manage space between the contents
+                Text(
+                  category.name,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  category
+                      .description, // Add a description field to your CategoryModel
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     Navigator.of(context).pop();
+                //   },
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: Colors.blue,
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(10),
+                //     ),
+                //   ),
+                //   child: const Text(
+                //     "Close",
+                //     style: TextStyle(color: Colors.white),
+                //   ),
+                // ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   // @override
   @override
   Widget build(BuildContext context) {
@@ -263,35 +328,40 @@ class _HomePageState extends State<HomePage> {
                     width: 20,
                   ),
               itemBuilder: (context, index) {
-                return Container(
-                  width: 100,
-                  // height: 80,
-                  decoration: BoxDecoration(
-                      color: categories[index].boxColor.withOpacity(
-                            0.3,
+                return GestureDetector(
+                  onTap: () {
+                    _showCategoryDetails(categories[index]);
+                  },
+                  child: Container(
+                    width: 100,
+                    // height: 80,
+                    decoration: BoxDecoration(
+                        color: categories[index].boxColor.withOpacity(
+                              0.3,
+                            ),
+                        borderRadius: BorderRadius.circular(16)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              color: Colors.white, shape: BoxShape.circle),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SvgPicture.asset(categories[index].iconPath),
                           ),
-                      borderRadius: BorderRadius.circular(16)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            color: Colors.white, shape: BoxShape.circle),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SvgPicture.asset(categories[index].iconPath),
                         ),
-                      ),
-                      Text(
-                        categories[index].name,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      )
-                    ],
+                        Text(
+                          categories[index].name,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 );
               }),
