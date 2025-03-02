@@ -17,7 +17,7 @@ class CategoryModel {
     List<CategoryModel> categories = [];
 
     categories.add(CategoryModel(
-        name: 'Salad',
+        name: 'salad',
         iconPath: 'assets/icons/plate.svg',
         boxColor: Color(0xff92A3FD),
         description: "salad "));

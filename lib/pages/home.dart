@@ -18,6 +18,13 @@ class _HomePageState extends State<HomePage> {
 
   List<PopularModel> popular = [];
 
+  // Controller for search field
+  final TextEditingController _searchController = TextEditingController();
+
+  // State to manage search results
+  List<dynamic> searchResults = [];
+  bool isSearching = false;
+
   void getCategories() {
     categories = CategoryModel.getCategories();
   }
@@ -95,6 +102,25 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void _performSearch(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        isSearching = false;
+        searchResults.clear();
+      } else {
+        isSearching = true;
+        searchResults = [
+          ...categories.where((category) =>
+              category.name.toLowerCase().contains(query.toLowerCase())),
+          ...diets.where(
+              (diet) => diet.name.toLowerCase().contains(query.toLowerCase())),
+          ...popular.where(
+              (item) => item.name.toLowerCase().contains(query.toLowerCase())),
+        ];
+      }
+    });
+  }
+
   // @override
   @override
   Widget build(BuildContext context) {
@@ -110,16 +136,177 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: 40,
           ),
-          categoriesSection(),
-          SizedBox(
-            height: 40,
-          ),
-          recommendationSection(),
-          SizedBox(
-            height: 40,
-          ),
-          popularItemsSection(),
+          if (isSearching)
+            searchResultsSection()
+          else ...[
+            categoriesSection(),
+            const SizedBox(height: 40),
+            recommendationSection(),
+            const SizedBox(height: 40),
+            popularItemsSection(),
+          ],
           // SizedBox(height: ,)
+        ],
+      ),
+    );
+  }
+
+  Widget searchResultsSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(left: 20.0),
+          child: Text(
+            "Search Results",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+        ),
+        const SizedBox(height: 15),
+        ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: searchResults.length,
+          separatorBuilder: (context, index) => const SizedBox(height: 15),
+          itemBuilder: (context, index) {
+            final item = searchResults[index];
+            if (item is CategoryModel) {
+              return _buildCategoryItem(item);
+            } else if (item is DietModel) {
+              return _buildDietItem(item);
+            } else if (item is PopularModel) {
+              return _buildPopularItem(item);
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCategoryItem(CategoryModel category) {
+    return GestureDetector(
+      onTap: () => _showCategoryDetails(category),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: category.boxColor.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          children: [
+            SvgPicture.asset(
+              category.iconPath,
+              width: 40,
+              height: 40,
+            ),
+            const SizedBox(width: 16),
+            Text(
+              category.name,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDietItem(DietModel diet) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xff1D1617).withOpacity(0.07),
+            offset: const Offset(0, 10),
+            blurRadius: 40,
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          SvgPicture.asset(
+            diet.iconPath,
+            width: 40,
+            height: 40,
+          ),
+          const SizedBox(width: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                diet.name,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Text(
+                '${diet.level} | ${diet.duration} | ${diet.calorie}',
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPopularItem(PopularModel popular) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xff1D1617).withOpacity(0.07),
+            offset: const Offset(0, 10),
+            blurRadius: 40,
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          SvgPicture.asset(
+            popular.iconPath,
+            width: 40,
+            height: 40,
+          ),
+          const SizedBox(width: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                popular.name,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Text(
+                '${popular.level} | ${popular.duration} | ${popular.calorie}',
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
