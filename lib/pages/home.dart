@@ -46,98 +46,100 @@ class HomePage extends StatelessWidget {
           SizedBox(
             height: 40,
           ),
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: Text(
-                "Popular",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Container(
-              height: 250,
-              child: ListView.separated(
-                  itemBuilder: (context, index) {
-                    return Container(
-                      height: 110,
-                      decoration:
-                          BoxDecoration(color: Colors.white, boxShadow: [
-                        BoxShadow(
-                            color: Color(0xff1D1617).withOpacity(0.07),
-                            offset: Offset(0, 10),
-                            blurRadius: 40,
-                            spreadRadius: 0)
-                      ]),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            SvgPicture.asset(
-                              popular[index].iconPath,
-                              width: 65,
-                              height: 65,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  popular[index].name,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                Text(
-                                  popular[index].level +
-                                      ' | ' +
-                                      popular[index].duration +
-                                      ' | ' +
-                                      popular[index].calorie,
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: SvgPicture.asset(
-                                'assets/icons/button.svg',
-                                width: 30,
-                                height: 30,
-                              ),
-                            ),
-                          ]),
-                      // decoration: BoxDecoration(
-                      //     color: popular[index].boxIsSelected
-                      //         ? Colors.white
-                      //         : Colors.transparent,
-                      //     boxShadow: popular[index].boxIsSelected
-                      //         ? [
-                      //             BoxShadow(
-                      //                 color:
-                      //                     Color(0xff1D1617).withOpacity(0.07),
-                      //                 offset: Offset(0, 10),
-                      //                 blurRadius: 40,
-                      //                 spreadRadius: 0)
-                      //           ]
-                      //         : []),
-                    );
-                  },
-                  separatorBuilder: (context, index) => SizedBox(height: 25),
-                  padding: EdgeInsets.only(left: 20, right: 20),
-                  itemCount: popular.length
-                ),
-            )
-          ]),
-          SizedBox(height: ,)
+          popularItemsSection(),
+          // SizedBox(height: ,)
         ],
       ),
     );
+  }
+
+  Column popularItemsSection() {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 20.0),
+        child: Text(
+          "Popular",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+      ),
+      SizedBox(
+        height: 15,
+      ),
+      Container(
+        height: 250,
+        child: ListView.separated(
+            itemBuilder: (context, index) {
+              return Container(
+                height: 110,
+                decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                  BoxShadow(
+                      color: Color(0xff1D1617).withOpacity(0.07),
+                      offset: Offset(0, 10),
+                      blurRadius: 40,
+                      spreadRadius: 0)
+                ]),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SvgPicture.asset(
+                        popular[index].iconPath,
+                        width: 65,
+                        height: 65,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            popular[index].name,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            popular[index].level +
+                                ' | ' +
+                                popular[index].duration +
+                                ' | ' +
+                                popular[index].calorie,
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: () {},
+                        child: SvgPicture.asset(
+                          'assets/icons/button.svg',
+                          width: 30,
+                          height: 30,
+                        ),
+                      ),
+                    ]),
+                // decoration: BoxDecoration(
+                //     color: popular[index].boxIsSelected
+                //         ? Colors.white
+                //         : Colors.transparent,
+                //     boxShadow: popular[index].boxIsSelected
+                //         ? [
+                //             BoxShadow(
+                //                 color:
+                //                     Color(0xff1D1617).withOpacity(0.07),
+                //                 offset: Offset(0, 10),
+                //                 blurRadius: 40,
+                //                 spreadRadius: 0)
+                //           ]
+                //         : []),
+              );
+            },
+            separatorBuilder: (context, index) => SizedBox(height: 25),
+            padding: EdgeInsets.only(left: 20, right: 20),
+            itemCount: popular.length),
+      )
+    ]);
   }
 
   Column recommendationSection() {
